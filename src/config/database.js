@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import Sequelize from "sequelize";
 
 const sequelize = new Sequelize('online_learning_db', 'sa', 'Root@123456', {
   host: 'localhost',
@@ -23,4 +23,4 @@ const connectDB = async () => {
   }
 }
 
-export const SQL = { sequelize, connectDB }
+export { sequelize, connectDB }

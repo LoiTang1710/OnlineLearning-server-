@@ -1,8 +1,8 @@
-import Course from "./course.model";
-import Enroll from "./enroll.model";
-import Lesson from "./lesson.model";
-import Role from "./role.model";
-import User from "./user.model";
+import Course from "./course.model.js";
+import Enroll from "./enroll.model.js";
+import Lesson from "./lesson.model.js";
+import Role from "./role.model.js";
+import User from "./user.model.js";
 
 // RBTV Role-User
 Role.hasMany(User, { foreignKey: 'role_id' })
