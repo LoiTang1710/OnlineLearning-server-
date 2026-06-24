@@ -18,7 +18,10 @@
   },
   "type": "module",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "http-status-codes": "^2.3.0",
     "mssql": "^12.5.5",
     "sequelize": "^6.37.8",
     "tedious": "^19.2.1"
