@@ -1,4 +1,4 @@
-import ApiError from "../utils/apiError.util.js";
+import ApiError from "../utils/piError.util.js";
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 
