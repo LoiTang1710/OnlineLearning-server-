@@ -17,9 +17,11 @@ export const login = async (req, res, next) => {
       maxAge: ms("7 days"),
     });
 
-    res.status(StatusCodes.OK).json({ message: "Login Success", accessToken });
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: "Login Success", accessToken });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -32,8 +34,19 @@ export const register = async (req, res, next) => {
       password,
       full_name,
     });
-    res.status(StatusCodes.OK).json({ message: "Register success" });
+    return res.status(StatusCodes.OK).json({ message: "Register success" });
   } catch (error) {
-   next(error)
+    next(error);
+  }
+};
+
+export const refreshToken = async (req, res, next) => {
+  try {
+    const token = req.cookie?.refreshToken;
+    const { accessToken } = await Auth.refreshToken(token);
+    console.log("accessToken-refresh: ", accessToken)
+    return res.status(StatusCodes.OK).json({ accessToken });
+  } catch (error) {
+    next(error);
   }
 };

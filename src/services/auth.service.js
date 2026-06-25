@@ -5,6 +5,10 @@ import { JwtProvider } from "../providers/JwtProvider.js";
 import { env } from "../config/environment.js";
 import crypto from "crypto";
 import ms from "ms";
+import ApiError from "../utils/ApiError.util.js";
+
+const ACCESS_TOKEN_TTL = "3s";
+const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 
 async function login({ email, password }) {
   const user = await User.findOne({ where: { email } });
@@ -25,11 +29,11 @@ async function login({ email, password }) {
   const accessToken = JwtProvider.generateToken(
     { id: user.user_id },
     env.ACCESS_TOKEN_SECRET,
-    "1h",
+    ACCESS_TOKEN_TTL,
   );
   const refreshToken = crypto.randomBytes(64).toString("hex");
 
-  const expireDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+  const expireDate = new Date(Date.now() + REFRESH_TOKEN_TTL);
 
   await Session.create({
     user_id: user.user_id,
@@ -49,7 +53,7 @@ async function login({ email, password }) {
 async function register({ email, username, password, full_name }) {
   const existingUser = await User.findOne({ where: { email, username } });
   if (existingUser) {
-    console.error("User existed!");
+    throw new ApiError(StatusCodes.CONFLICT, "User already existed");
   }
   const newUser = await User.create({
     username,
@@ -64,8 +68,26 @@ async function register({ email, username, password, full_name }) {
     user: userWithoutPassword,
   };
 }
+async function refreshToken(token) {
+  const session = await Session.findOne({ where: { refreshToken: token } });
+  if (!session) {
+    throw new ApiError(StatusCodes.FORBIDDEN, "Invalid Token");
+  }
+  if (session.expiresAt < new Date()) {
+    throw new ApiError(StatusCodes.FORBIDDEN, "Expired Token");
+  }
+  const accessToken = JwtProvider.generateToken(
+    { id: session.user_id },
+    env.ACCESS_TOKEN_SECRET,
+    ACCESS_TOKEN_TTL,
+  );
+  return {
+    accessToken,
+  };
+}
 
 export const Auth = {
   login,
   register,
+  refreshToken,
 };
