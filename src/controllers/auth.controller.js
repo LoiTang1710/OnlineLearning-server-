@@ -19,6 +19,7 @@ export const register = async (req, res) => {
     res.status(StatusCodes.OK).json({ message: 'Register success' })
   }
   catch (error) {
+    console.error("--- CONTROLLER REGISTER ERROR BUSTED ---:", error);
     return res.status(StatusCodes.BAD_REQUEST).json({ message: error.message })
   }
 }
