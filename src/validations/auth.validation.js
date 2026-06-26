@@ -21,7 +21,6 @@ const register = async(req,res,next) => {
         username: Joi.string().max(50).required(),
         email: Joi.string().email().required(),
         password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{8,30}$")),
-        confirmPassword: Joi.ref('password'),
         full_name: Joi.string().required(),
     })
     try {
