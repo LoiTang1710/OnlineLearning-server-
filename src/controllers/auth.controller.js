@@ -4,9 +4,9 @@ import ms from "ms";
 
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
     const { user, accessToken, refreshToken } = await Auth.login({
-      email,
+      identifier,
       password,
     });
     console.log("accessToken: ", accessToken);

@@ -6,17 +6,17 @@ import { env } from "../config/environment.js";
 import crypto from "crypto";
 import ms from "ms";
 import ApiError from "../utils/ApiError.util.js";
+import { Op } from "sequelize";
 
 const ACCESS_TOKEN_TTL = "3s";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 
-async function login({ email, password }) {
-  const user = await User.findOne({ where: { email } });
+async function login({ identifier, password }) {
+  const user = await User.findOne({
+    where: { [Op.or]: [{ email: identifier }, { username: identifier }] },
+  });
   if (!user || !user.password) {
-    throw new ApiError(
-      StatusCodes.UNAUTHORIZED,
-      "Email hoặc mật khẩu không chính xác",
-    );
+    throw new ApiError(StatusCodes.UNAUTHORIZtại, "Tài khoản không tồn tại");
   }
 
   const validatePassword = await bcrypt.compare(password, user.password);
@@ -53,7 +53,7 @@ async function login({ email, password }) {
 async function register({ email, username, password, full_name }) {
   const existingUser = await User.findOne({ where: { email, username } });
   if (existingUser) {
-    throw new ApiError(StatusCodes.CONFLICT, "User already existed");
+    throw new ApiError(StatusCodes.CONFLICT, "Tài khoản đã tồn tại");
   }
   const newUser = await User.create({
     username,
@@ -63,7 +63,7 @@ async function register({ email, username, password, full_name }) {
     role_id: 2,
   });
 
-  const { password: _, ...userWithoutPassword } = newUser.dataValues;
+  const { password: _, ...userWithoutPassword } = newUser.dataValutại;
   return {
     user: userWithoutPassword,
   };
