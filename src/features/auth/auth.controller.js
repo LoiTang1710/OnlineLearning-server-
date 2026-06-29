@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { Auth } from "../services/auth.service.js";
+import { Auth } from "./auth.service.js";
 import ms from "ms";
 
 export const login = async (req, res, next) => {
@@ -44,7 +44,7 @@ export const refreshToken = async (req, res, next) => {
   try {
     const token = req.cookie?.refreshToken;
     const { accessToken } = await Auth.refreshToken(token);
-    console.log("accessToken-refresh: ", accessToken)
+    console.log("accessToken-refresh: ", accessToken);
     return res.status(StatusCodes.OK).json({ accessToken });
   } catch (error) {
     next(error);

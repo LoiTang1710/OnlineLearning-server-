@@ -1,11 +1,11 @@
 import { StatusCodes } from "http-status-codes";
-import { Session, User } from "../models/index.js";
+import { Session, User } from "../../models/index.js";
 import bcrypt from "bcryptjs";
-import { JwtProvider } from "../providers/JwtProvider.js";
-import { env } from "../config/environment.js";
+import { JwtProvider } from "./JwtProvider.js";
+import { env } from "../../config/environment.js";
 import crypto from "crypto";
 import ms from "ms";
-import ApiError from "../utils/ApiError.util.js";
+import ApiError from "../../utils/ApiError.util.js";
 import { Op } from "sequelize";
 
 const ACCESS_TOKEN_TTL = "3s";

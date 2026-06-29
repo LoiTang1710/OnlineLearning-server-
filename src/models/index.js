@@ -1,8 +1,10 @@
-import Course from "./course.model.js";
+import Session from "../features/auth/session.model.js";
+import Course from "../features/courses/course.model.js";
+
 import Enroll from "./enroll.model.js";
 import Lesson from "./lesson.model.js";
 import Role from "./role.model.js";
-import Session from "./session.model.js";
+
 import User from "./user.model.js";
 
 // RBTV Role-User

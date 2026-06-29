@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
-import ApiError from "../utils/ApiError.util.js";
-import { JwtProvider } from "../providers/JwtProvider.js";
-import { env } from "../config/environment.js";
+import ApiError from "../../utils/ApiError.util.js";
+import { JwtProvider } from "./JwtProvider.js";
+import { env } from "../../config/environment.js";
 
 const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -24,7 +24,6 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-
 export const AuthMiddleware = {
-    verifyToken
-}
+  verifyToken,
+};
