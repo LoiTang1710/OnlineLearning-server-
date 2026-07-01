@@ -25,8 +25,8 @@ const mock_course = [
     description: "",
   },
 ];
-async function creatCourse({ title, description }) {
-  const course = await Course.create({ title, description });
+async function creatCourse({ title, description, imageUrl }) {
+  const course = await Course.create({ title, description, imageUrl });
   // Xác thực quyền người dùng có quyền tạo course không
 
   // Kiểm tra course được tạo ra thành công hay không
@@ -39,9 +39,10 @@ async function creatCourse({ title, description }) {
 }
 
 async function getAllCourses() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(mock_course), 500);
-  });
+  const courses = await Course.findAll()
+  return {
+    courses
+  }
 }
 
 async function deleteCourse({id}) {
