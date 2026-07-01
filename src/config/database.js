@@ -15,6 +15,7 @@ const sequelize = new Sequelize('online_learning_db', 'sa', 'Root@123456', {
 const connectDB = async () => {
   try {
     await sequelize.authenticate()
+    // await sequelize.sync({ force: true });
     console.log(`Successfully connect SQL Server`)
   }
   catch (error) {
